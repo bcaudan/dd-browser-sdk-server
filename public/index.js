@@ -1,8 +1,10 @@
-init();
-displayActions();
-displayServerContent();
+const testId = generateUUID()
 
-function init() {
+displayActions(testId);
+displayServerContent(testId);
+init(testId);
+
+function init(testId) {
   if (!window.DD_LOGS || !window.DD_RUM) {
     displayError("The browser SDK is not loaded.");
     return;
@@ -21,7 +23,7 @@ function init() {
     site,
     clientToken,
     telemetrySampleRate: 100,
-    proxyUrl: `${window.location.origin}/proxy`
+    proxyUrl: `${window.location.origin}/proxy/${testId}`
   });
 
   DD_RUM.init({
@@ -31,7 +33,7 @@ function init() {
     trackInteractions: true,
     telemetrySampleRate: 100,
     enableExperimentalFeatures: [],
-    proxyUrl: `${window.location.origin}/proxy`
+    proxyUrl: `${window.location.origin}/proxy/${testId}`
   });
 
   function displayError(text) {
@@ -41,7 +43,7 @@ function init() {
   }
 }
 
-function displayActions() {
+function displayActions(testId) {
   addButton("Send a log", "send-log", () => {
     DD_LOGS.logger.log(`A click occured at ${new Date()}`);
   });
@@ -67,13 +69,13 @@ function displayActions() {
 
 
   addButton("Empty server events", "empty-server-events", () => {
-    void fetch(`${window.location.origin}/empty`, {
+    void fetch(`${window.location.origin}/empty/${testId}`, {
       method: 'POST'
     })
   })
 }
 
-function displayServerContent() {
+function displayServerContent(testId) {
   const rumContainer = document.createElement("details");
   const rumSummary = document.createElement("summary");
   const rumContent = document.createElement("pre");
@@ -89,7 +91,7 @@ function displayServerContent() {
   logsContainer.appendChild(logsContent)
   document.body.appendChild(logsContainer);
 
-  const wsUrl = `${window.location.origin.replace(/^http/, 'ws')}/read`
+  const wsUrl = `${window.location.origin.replace(/^http/, 'ws')}/read/${testId}`
   const ws = new WebSocket(wsUrl)
   ws.onmessage = function (event) {
     let serverEvents = JSON.parse(event.data);
@@ -109,4 +111,11 @@ function addButton(label, id, handler) {
   const container = document.createElement("p");
   container.appendChild(button);
   document.body.appendChild(container);
+}
+
+function generateUUID(placeholder) {
+  return placeholder
+    ? // eslint-disable-next-line  no-bitwise
+    (parseInt(placeholder, 10) ^ ((Math.random() * 16) >> (parseInt(placeholder, 10) / 4))).toString(16)
+    : `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, generateUUID)
 }

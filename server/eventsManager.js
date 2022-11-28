@@ -1,21 +1,24 @@
 const expressWsFn = require('express-ws')
 
-function withEventsManager(app, serverEvents) {
+function withEventsManager(app, eventsRegistry) {
   expressWsFn(app)
-  app.ws('/read', function (ws, req) {
-    console.log('client connected')
+  app.ws('/read/:testId', function (ws, req) {
+    const testId = req.params.testId;
+    console.log('client connected', testId)
     const dumpRegistry = () => {
+      const testEvents = eventsRegistry.get(testId);
       ws.send(JSON.stringify({
-        rum: serverEvents.rum,
-        logs: serverEvents.logs
+        rum: testEvents.rum,
+        logs: testEvents.logs,
+        telemetry: testEvents.telemetry
       }))
     };
-    dumpRegistry()
-    serverEvents.onChange(dumpRegistry)
+    eventsRegistry.init(testId, dumpRegistry)
   })
 
-  app.post('/empty', function (_, res) {
-    serverEvents.empty()
+  app.post('/empty/:testId', function (req, res) {
+    const testId = req.params.testId;
+    eventsRegistry.empty(testId)
     res.end()
   })
 }
