@@ -14,6 +14,7 @@ function withEventsManager(app, eventsRegistry) {
       }))
     };
     eventsRegistry.init(testId, dumpRegistry)
+    dumpRegistry()
   })
 
   app.post('/empty/:testId', function (req, res) {
