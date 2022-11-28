@@ -59,6 +59,15 @@ function displayActions(testId) {
     });
   });
 
+  addButton("Send a telemetry error", "send-telemetry-error", () => {
+    const context = {
+      get foo() {
+        throw new window.Error("generated telemetry error");
+      },
+    };
+    DD_RUM.addAction("foo", context);
+  });
+
   addButton("Flush events", "flush-events", () => {
     const descriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'visibilityState')
     Object.defineProperty(Document.prototype, 'visibilityState', { value: 'hidden' })
@@ -79,17 +88,24 @@ function displayServerContent(testId) {
   const rumContainer = document.createElement("details");
   const rumSummary = document.createElement("summary");
   const rumContent = document.createElement("pre");
-  rumSummary.innerText = "rum events"
+  rumSummary.innerText = "rum events (0)"
   rumContainer.appendChild(rumSummary)
   rumContainer.appendChild(rumContent)
   document.body.appendChild(rumContainer);
   const logsContainer = document.createElement("details");
   const logsSummary = document.createElement("summary");
   const logsContent = document.createElement("pre");
-  logsSummary.innerText = "log events"
+  logsSummary.innerText = "logs events (0)"
   logsContainer.appendChild(logsSummary)
   logsContainer.appendChild(logsContent)
   document.body.appendChild(logsContainer);
+  const telemetryContainer = document.createElement("details");
+  const telemetrySummary = document.createElement("summary");
+  const telemetryContent = document.createElement("pre");
+  telemetrySummary.innerText = "telemetry events (0)"
+  telemetryContainer.appendChild(telemetrySummary)
+  telemetryContainer.appendChild(telemetryContent)
+  document.body.appendChild(telemetryContainer);
 
   const wsUrl = `${window.location.origin.replace(/^http/, 'ws')}/read/${testId}`
   const ws = new WebSocket(wsUrl)
@@ -97,8 +113,10 @@ function displayServerContent(testId) {
     let serverEvents = JSON.parse(event.data);
     rumSummary.innerText = `rum events (${serverEvents.rum.length})`
     logsSummary.innerText = `logs events (${serverEvents.logs.length})`
+    telemetrySummary.innerText = `telemetry events (${serverEvents.telemetry.length})`
     rumContent.innerText = JSON.stringify(serverEvents.rum, null, 2)
     logsContent.innerText = JSON.stringify(serverEvents.logs, null, 2)
+    telemetryContent.innerText = JSON.stringify(serverEvents.telemetry, null, 2)
   }
 }
 
