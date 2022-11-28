@@ -11,7 +11,12 @@ function withEventsManager(app, serverEvents) {
       }))
     };
     dumpRegistry()
-    serverEvents.onPush(dumpRegistry)
+    serverEvents.onChange(dumpRegistry)
+  })
+
+  app.post('/empty', function (_, res) {
+    serverEvents.empty()
+    res.end()
   })
 }
 

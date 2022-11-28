@@ -4,11 +4,11 @@ class EventsRegistry {
   rum = []
   logs = []
   telemetry = []
-  callback = undefined
+  onChangeCallback = undefined
 
   push(type, event) {
     this[type].push(event)
-    this.callback && this.callback()
+    this.onChangeCallback && this.onChangeCallback()
   }
 
   count() {
@@ -19,10 +19,11 @@ class EventsRegistry {
     this.rum.length = 0
     this.telemetry.length = 0
     this.logs.length = 0
+    this.onChangeCallback && this.onChangeCallback()
   }
 
-  onPush(callback) {
-    this.callback = _.throttle(callback, 100)
+  onChange(callback) {
+    this.onChangeCallback = _.throttle(callback, 100)
   }
 }
 

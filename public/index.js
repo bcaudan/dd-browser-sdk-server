@@ -64,6 +64,13 @@ function displayActions() {
     Object.defineProperty(Document.prototype, 'visibilityState', descriptor)
     document.dispatchEvent(new Event('visibilitychange', { bubbles: true }))
   })
+
+
+  addButton("Empty server events", "empty-server-events", () => {
+    void fetch(`${window.location.origin}/empty`, {
+      method: 'POST'
+    })
+  })
 }
 
 function displayServerContent() {
