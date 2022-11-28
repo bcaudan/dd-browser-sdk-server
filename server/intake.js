@@ -17,7 +17,6 @@ function withIntake(app, serverEvents) {
         }
       })
     }
-    console.log(serverEvents.count())
     res.end()
   })
 }

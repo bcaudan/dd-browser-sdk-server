@@ -1,12 +1,15 @@
 const path = require('path')
 const express = require('express')
-const { withIntake } = require("./server/intake");
 const EventsRegistry = require("./server/eventsRegistry");
+const { withEventsManager } = require("./server/eventsManager");
+const { withIntake } = require("./server/intake");
 
 const port = process.env.PORT || 5000;
 const app = express()
 
-withIntake(app, new EventsRegistry())
+const eventsRegistry = new EventsRegistry();
+withEventsManager(app, eventsRegistry)
+withIntake(app, eventsRegistry)
 
 app.use(express.static(path.join(__dirname, './public')))
 
