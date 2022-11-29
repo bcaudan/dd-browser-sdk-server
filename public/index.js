@@ -9,31 +9,23 @@ function init(testId) {
     displayError("The browser SDK is not loaded.");
     return;
   }
-  const params = new URLSearchParams(location.search);
-  const clientToken = params.get("client_token");
-  const applicationId = params.get("application_id");
-  const site = params.get("site") || undefined;
-
-  if (!clientToken || !applicationId) {
-    displayError("Missing client_token or application_id in URL parameters.");
-    return;
-  }
+  const clientToken = 'xxx';
+  const applicationId = 'yyy';
+  const proxyUrl = `${window.location.origin}/proxy/${testId}`;
 
   DD_LOGS.init({
-    site,
     clientToken,
+    proxyUrl,
     telemetrySampleRate: 100,
-    proxyUrl: `${window.location.origin}/proxy/${testId}`
   });
 
   DD_RUM.init({
-    site,
     clientToken,
     applicationId,
+    proxyUrl,
     trackInteractions: true,
     telemetrySampleRate: 100,
     enableExperimentalFeatures: [],
-    proxyUrl: `${window.location.origin}/proxy/${testId}`
   });
 
   function displayError(text) {
