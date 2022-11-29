@@ -33,7 +33,7 @@ function forwardToIntake(req, res) {
     const options = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain;charset=UTF-8',
         'Content-Length': req.body.length,
         'X-Forwarded-For': req.socket.remoteAddress,
         'User-Agent': req.headers['user-agent']
