@@ -1,4 +1,5 @@
 window.testId = generateUUID()
+console.log('testId', testId)
 window.proxyUrl = `${window.location.origin}/proxy/${testId}`
 window.clientToken = 'xxx';
 window.applicationId = 'yyy';
