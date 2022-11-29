@@ -1,14 +1,13 @@
 window.testId = generateUUID()
 window.proxyUrl = `${window.location.origin}/proxy/${testId}`
+window.clientToken = 'xxx';
+window.applicationId = 'yyy';
 window.serverEvents = {}
 
 displayActions(testId);
 displayServerContent(testId);
 
 function displayActions(testId) {
-  const clientToken = 'xxx';
-  const applicationId = 'yyy';
-
   addButton("Init log", "init-log", () => {
     DD_LOGS.init({
       clientToken,
