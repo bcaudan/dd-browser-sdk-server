@@ -102,7 +102,7 @@ function displayServerContent(testId) {
   const wsUrl = `${window.location.origin.replace(/^http/, 'ws')}/read/${testId}`
   const ws = new WebSocket(wsUrl)
   ws.onmessage = function (event) {
-    let serverEvents = JSON.parse(event.data);
+    window.serverEvents = JSON.parse(event.data);
     rumSummary.innerText = `rum events (${serverEvents.rum.length})`
     logsSummary.innerText = `logs events (${serverEvents.logs.length})`
     telemetrySummary.innerText = `telemetry events (${serverEvents.telemetry.length})`
