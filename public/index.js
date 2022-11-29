@@ -16,6 +16,7 @@ function init(testId) {
   DD_LOGS.init({
     clientToken,
     proxyUrl,
+    forwardErrorsToLogs: true,
     telemetrySampleRate: 100,
   });
 
