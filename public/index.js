@@ -1,42 +1,33 @@
-const testId = generateUUID()
+window.testId = generateUUID()
+window.proxyUrl = `${window.location.origin}/proxy/${testId}`
+window.serverEvents = {}
 
 displayActions(testId);
 displayServerContent(testId);
-init(testId);
-
-function init(testId) {
-  if (!window.DD_LOGS || !window.DD_RUM) {
-    displayError("The browser SDK is not loaded.");
-    return;
-  }
-  const clientToken = 'xxx';
-  const applicationId = 'yyy';
-  const proxyUrl = `${window.location.origin}/proxy/${testId}`;
-
-  DD_LOGS.init({
-    clientToken,
-    proxyUrl,
-    forwardErrorsToLogs: true,
-    telemetrySampleRate: 100,
-  });
-
-  DD_RUM.init({
-    clientToken,
-    applicationId,
-    proxyUrl,
-    trackInteractions: true,
-    telemetrySampleRate: 100,
-    enableExperimentalFeatures: [],
-  });
-
-  function displayError(text) {
-    const container = document.createElement("p");
-    container.innerText = text;
-    document.body.appendChild(container);
-  }
-}
 
 function displayActions(testId) {
+  const clientToken = 'xxx';
+  const applicationId = 'yyy';
+
+  addButton("Init log", "init-log", () => {
+    DD_LOGS.init({
+      clientToken,
+      proxyUrl,
+      telemetrySampleRate: 100,
+    });
+  });
+
+  addButton("Init rum", "init-rum", () => {
+    DD_RUM.init({
+      clientToken,
+      applicationId,
+      proxyUrl,
+      trackInteractions: true,
+      telemetrySampleRate: 100,
+      enableExperimentalFeatures: [],
+    });
+  });
+
   addButton("Send a log", "send-log", () => {
     DD_LOGS.logger.log(`A click occured at ${new Date()}`);
   });
@@ -106,7 +97,7 @@ function displayServerContent(testId) {
   const wsUrl = `${window.location.origin.replace(/^http/, 'ws')}/read/${testId}`
   const ws = new WebSocket(wsUrl)
   ws.onmessage = function (event) {
-    window.serverEvents = JSON.parse(event.data);
+    serverEvents = JSON.parse(event.data);
     rumSummary.innerText = `rum events (${serverEvents.rum.length})`
     logsSummary.innerText = `logs events (${serverEvents.logs.length})`
     telemetrySummary.innerText = `telemetry events (${serverEvents.telemetry.length})`
