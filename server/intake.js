@@ -29,6 +29,7 @@ function storeEvents(req, eventsRegistry) {
 
 function forwardToIntake(req, res) {
   if (/^https:\/\/(rum|logs)\.browser-intake-datadoghq\.com\//.test(req.query.ddforward)) {
+    console.log('forward', req.query.ddforward)
     const options = {
       method: 'POST',
       headers: {
@@ -38,11 +39,15 @@ function forwardToIntake(req, res) {
         'User-Agent': req.headers['user-agent']
       }
     }
-    const intakeReq = https.request(req.query.ddforward, options, () =>  res.end())
+    const intakeReq = https.request(req.query.ddforward, options, () =>  {
+      console.log('intake response received')
+      res.end()
+    })
     intakeReq.write(req.body)
     intakeReq.on('error', console.error)
     intakeReq.end()
   } else {
+    console.log('cancel intake forwarding')
     res.end()
   }
 }
