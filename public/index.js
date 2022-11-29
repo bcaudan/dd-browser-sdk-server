@@ -79,6 +79,7 @@ function displayActions(testId) {
 
 function displayServerContent(testId) {
   const rumContainer = document.createElement("details");
+  rumContainer.setAttribute("open", "true")
   const rumSummary = document.createElement("summary");
   const rumContent = document.createElement("pre");
   rumSummary.innerText = "rum events (0)"
@@ -86,6 +87,7 @@ function displayServerContent(testId) {
   rumContainer.appendChild(rumContent)
   document.body.appendChild(rumContainer);
   const logsContainer = document.createElement("details");
+  logsContainer.setAttribute("open", "true")
   const logsSummary = document.createElement("summary");
   const logsContent = document.createElement("pre");
   logsSummary.innerText = "logs events (0)"
@@ -93,6 +95,7 @@ function displayServerContent(testId) {
   logsContainer.appendChild(logsContent)
   document.body.appendChild(logsContainer);
   const telemetryContainer = document.createElement("details");
+  telemetryContainer.setAttribute("open", "true")
   const telemetrySummary = document.createElement("summary");
   const telemetryContent = document.createElement("pre");
   telemetrySummary.innerText = "telemetry events (0)"
