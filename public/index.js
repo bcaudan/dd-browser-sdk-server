@@ -1,8 +1,8 @@
 window.testId = generateUUID()
 console.error('testId', testId)
 window.proxyUrl = `${window.location.origin}/proxy/${testId}`
-window.clientToken = 'xxx';
-window.applicationId = 'yyy';
+window.clientToken = 'pubaa1b2bf3a9105d06a69cee8d0fc7e696';
+window.applicationId = 'cdead9fa-f7fc-4ceb-8e08-d2d22a3cc010';
 window.serverEvents = {}
 
 displayActions(testId);
