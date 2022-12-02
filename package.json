@@ -8,7 +8,7 @@
     "watch": "nodemon --exec \"heroku local\" --signal SIGTERM"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "repository": {
     "type": "git",
@@ -21,9 +21,11 @@
   },
   "homepage": "https://github.com/bcaudan/dd-browser-sdk-server#readme",
   "dependencies": {
+    "connect-busboy": "^1.0.0",
     "cors": "^2.8.5",
     "express": "4.17.3",
     "express-ws": "^5.0.2",
+    "form-data": "^4.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

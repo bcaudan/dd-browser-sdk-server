@@ -26,6 +26,7 @@ function displayActions(testId) {
       telemetrySampleRate: 100,
       enableExperimentalFeatures: [],
     });
+    DD_RUM.startSessionReplayRecording()
   });
 
   addButton("Send a log", "send-log", () => {
